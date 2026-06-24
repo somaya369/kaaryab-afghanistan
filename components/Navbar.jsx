@@ -9,6 +9,7 @@ const navLinks = [
     {label: "About" , href: "/about"},
     {label: "Contact", href: "/contact"},
 ];
+
 // Reusable Navbar component
 export default function Navbar() {
     return (
