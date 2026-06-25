@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OpportunityCard from "@/components/OpportunityCard";
 import { opportunities } from "@/data/opportunities";
 
 export default function OpportunitiesPage() {
   // Store search text
   const [search, setSearch] = useState("");
+  const [allOpportunities, setAllOpportunities] = useState(opportunities);
 
   // Store selected category
   const [category, setCategory] = useState("All Categories");
@@ -25,9 +26,14 @@ export default function OpportunitiesPage() {
     "Training Program",
     "Volunteer Work",
   ];
+useEffect(() => {
+  const storedOpportunities =
+    JSON.parse(localStorage.getItem("customOpportunities")) || [];
 
+  setAllOpportunities([...opportunities, ...storedOpportunities]);
+}, []);
   // Filter opportunities based on search, category, and type
-  const filteredOpportunities = opportunities.filter((opportunity) => {
+ const filteredOpportunities = allOpportunities.filter((opportunity) => {
     const matchesSearch = opportunity.title
       .toLowerCase()
       .includes(search.toLowerCase());

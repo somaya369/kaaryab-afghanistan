@@ -8,10 +8,12 @@ import { FaBars, FaTimes } from "react-icons/fa";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Opportunities", href: "/opportunities" },
+   { label: "Add Opportunity", href: "/add-opportunity" },
   { label: "Saved", href: "/saved" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
+ 
 ];
 
 // Reusable Navbar component
@@ -64,6 +66,7 @@ export default function Navbar() {
               >
                 {link.label}
               </Link>
+              
             ))}
           </div>
         </div>
