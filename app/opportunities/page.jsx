@@ -14,6 +14,18 @@ export default function OpportunitiesPage() {
   // Store selected type
   const [type, setType] = useState("All Types");
 
+  // Category tabs data
+  const categoryTabs = [
+    "All Categories",
+    "Job",
+    "Internship",
+    "Scholarship",
+    "Online Course",
+    "Remote Work",
+    "Training Program",
+    "Volunteer Work",
+  ];
+
   // Filter opportunities based on search, category, and type
   const filteredOpportunities = opportunities.filter((opportunity) => {
     const matchesSearch = opportunity.title
@@ -57,20 +69,15 @@ export default function OpportunitiesPage() {
               className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 md:col-span-2"
             />
 
-            {/* Category filter */}
+            {/* Category filter dropdown */}
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
             >
-              <option>All Categories</option>
-              <option>Job</option>
-              <option>Internship</option>
-              <option>Scholarship</option>
-              <option>Online Course</option>
-              <option>Remote Work</option>
-              <option>Training Program</option>
-              <option>Volunteer Work</option>
+              {categoryTabs.map((item) => (
+                <option key={item}>{item}</option>
+              ))}
             </select>
 
             {/* Type filter */}
@@ -84,15 +91,38 @@ export default function OpportunitiesPage() {
               <option>On-site</option>
             </select>
           </div>
+
+          {/* Category Tabs */}
+          <div className="mt-6 flex flex-wrap gap-3">
+            {categoryTabs.map((item) => (
+              <button
+                key={item}
+                onClick={() => setCategory(item)}
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                  category === item
+                    ? "border-blue-600 bg-blue-600 text-white"
+                    : "border-gray-300 bg-white text-gray-700 hover:border-blue-600 hover:text-blue-600"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Opportunity Cards */}
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h2 className="mb-6 text-2xl font-bold text-gray-900">
-            All Opportunities
-          </h2>
+          <div className="mb-6 flex items-center justify-between gap-4">
+            <h2 className="text-2xl font-bold text-gray-900">
+              All Opportunities
+            </h2>
+
+            <p className="text-sm text-gray-600">
+              {filteredOpportunities.length} results found
+            </p>
+          </div>
 
           {filteredOpportunities.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
