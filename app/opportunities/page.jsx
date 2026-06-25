@@ -1,7 +1,33 @@
+"use client";
+
+import { useState } from "react";
 import OpportunityCard from "@/components/OpportunityCard";
 import { opportunities } from "@/data/opportunities";
 
 export default function OpportunitiesPage() {
+  // Store search text
+  const [search, setSearch] = useState("");
+
+  // Store selected category
+  const [category, setCategory] = useState("All Categories");
+
+  // Store selected type
+  const [type, setType] = useState("All Types");
+
+  // Filter opportunities based on search, category, and type
+  const filteredOpportunities = opportunities.filter((opportunity) => {
+    const matchesSearch = opportunity.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesCategory =
+      category === "All Categories" || opportunity.category === category;
+
+    const matchesType = type === "All Types" || opportunity.type === type;
+
+    return matchesSearch && matchesCategory && matchesType;
+  });
+
   return (
     <main className="bg-gray-50">
       {/* Page Header */}
@@ -26,21 +52,33 @@ export default function OpportunitiesPage() {
             <input
               type="text"
               placeholder="Search by title..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 md:col-span-2"
             />
 
             {/* Category filter */}
-            <select className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+            >
               <option>All Categories</option>
               <option>Job</option>
               <option>Internship</option>
               <option>Scholarship</option>
               <option>Online Course</option>
               <option>Remote Work</option>
+              <option>Training Program</option>
+              <option>Volunteer Work</option>
             </select>
 
             {/* Type filter */}
-            <select className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500">
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+            >
               <option>All Types</option>
               <option>Remote</option>
               <option>On-site</option>
@@ -56,14 +94,20 @@ export default function OpportunitiesPage() {
             All Opportunities
           </h2>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {opportunities.map((opportunity) => (
-              <OpportunityCard
-                key={opportunity.id}
-                opportunity={opportunity}
-              />
-            ))}
-          </div>
+          {filteredOpportunities.length > 0 ? (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredOpportunities.map((opportunity) => (
+                <OpportunityCard
+                  key={opportunity.id}
+                  opportunity={opportunity}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border bg-white p-8 text-center text-gray-600">
+              No opportunities found.
+            </div>
+          )}
         </div>
       </section>
     </main>
