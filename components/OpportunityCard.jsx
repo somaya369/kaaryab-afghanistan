@@ -9,16 +9,17 @@ import {
   FaCalendarAlt,
   FaBriefcase,
   FaArrowRight,
+  FaTrash,
 } from "react-icons/fa";
 
-export default function OpportunityCard({ opportunity }) {
+export default function OpportunityCard({ opportunity, onDelete }) {
   const { saveOpportunity, removeOpportunity, isSaved } = useSaved();
 
   const saved = isSaved(opportunity.id);
 
   return (
     <div className="group relative overflow-hidden rounded-3xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-2 hover:border-blue-200 hover:shadow-xl">
-      {/* Category badge */}
+      {/* Top section: category badge and save button */}
       <div className="flex items-center justify-between">
         <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
           {opportunity.category}
@@ -40,17 +41,17 @@ export default function OpportunityCard({ opportunity }) {
         </button>
       </div>
 
-      {/* Title */}
+      {/* Opportunity title */}
       <h3 className="mt-5 text-xl font-bold text-gray-900 group-hover:text-blue-700">
         {opportunity.title}
       </h3>
 
-      {/* Organization */}
+      {/* Organization name */}
       <p className="mt-2 text-sm font-medium text-gray-600">
         {opportunity.organization}
       </p>
 
-      {/* Details */}
+      {/* Basic details */}
       <div className="mt-5 space-y-3 text-sm text-gray-600">
         <p className="flex items-center gap-2">
           <FaMapMarkerAlt className="text-blue-600" />
@@ -80,14 +81,27 @@ export default function OpportunityCard({ opportunity }) {
         ))}
       </div>
 
-      {/* View details */}
-      <Link
-        href={`/opportunities/${opportunity.id}`}
-        className="mt-6 inline-flex items-center gap-2 font-medium text-blue-600 transition hover:gap-3 hover:text-blue-800"
-      >
-        View Details
-        <FaArrowRight />
-      </Link>
+      {/* Card action buttons */}
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        <Link
+          href={`/opportunities/${opportunity.id}`}
+          className="inline-flex items-center gap-2 font-medium text-blue-600 transition hover:gap-3 hover:text-blue-800"
+        >
+          View Details
+          <FaArrowRight />
+        </Link>
+
+        {/* Delete button appears only when onDelete is passed from parent page */}
+        {onDelete && (
+          <button
+            onClick={() => onDelete(opportunity.id)}
+            className="inline-flex items-center gap-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100"
+          >
+            <FaTrash />
+            Delete
+          </button>
+        )}
+      </div>
     </div>
   );
 }
