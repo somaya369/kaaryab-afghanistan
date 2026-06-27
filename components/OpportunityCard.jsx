@@ -10,9 +10,10 @@ import {
   FaBriefcase,
   FaArrowRight,
   FaTrash,
+  FaEdit,
 } from "react-icons/fa";
 
-export default function OpportunityCard({ opportunity, onDelete }) {
+export default function OpportunityCard({ opportunity, onDelete, onEdit }) {
   const { saveOpportunity, removeOpportunity, isSaved } = useSaved();
 
   const saved = isSaved(opportunity.id);
@@ -83,6 +84,7 @@ export default function OpportunityCard({ opportunity, onDelete }) {
 
       {/* Card action buttons */}
       <div className="mt-6 flex flex-wrap items-center gap-3">
+        
         <Link
           href={`/opportunities/${opportunity.id}`}
           className="inline-flex items-center gap-2 font-medium text-blue-600 transition hover:gap-3 hover:text-blue-800"
@@ -90,6 +92,14 @@ export default function OpportunityCard({ opportunity, onDelete }) {
           View Details
           <FaArrowRight />
         </Link>
+        <Link
+  href={`/edit-opportunity/${opportunity.id}`}
+  className="inline-flex items-center gap-2 rounded-xl bg-yellow-50 px-4 py-2 text-sm font-medium text-yellow-700 transition hover:bg-yellow-100"
+>
+  <FaEdit />
+  Edit
+</Link>
+
 
         {/* Delete button appears only when onDelete is passed from parent page */}
         {onDelete && (
@@ -99,6 +109,17 @@ export default function OpportunityCard({ opportunity, onDelete }) {
           >
             <FaTrash />
             Delete
+          </button>
+        )}
+
+        {/* Edit button appears only when onEdit is passed from parent page */}
+        {onEdit && (
+          <button
+            onClick={() => onEdit(opportunity.id)}
+            className="inline-flex items-center gap-2 rounded-xl bg-gray-100 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-200"
+          >
+            <FaEdit />
+            Edit
           </button>
         )}
       </div>

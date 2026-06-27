@@ -103,15 +103,20 @@ function TextAreaInput({ label, error, ...props }) {
 }
 
 /* Main reusable opportunity form */
-export default function OpportunityForm({ onSubmit }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm({
-    resolver: zodResolver(opportunitySchema),
-  });
+export default function OpportunityForm({
+  onSubmit,
+  defaultValues,
+  formTitle = "Add New Opportunity",
+  submitLabel = "Submit Opportunity",
+}) {const {
+  register,
+  handleSubmit,
+  formState: { errors, isSubmitting },
+  reset,
+} = useForm({
+  resolver: zodResolver(opportunitySchema),
+  defaultValues: defaultValues,
+});
 
   return (
     <form
@@ -130,7 +135,7 @@ export default function OpportunityForm({ onSubmit }) {
           </span>
 
           <h2 className="mt-6 text-3xl font-extrabold md:text-4xl">
-            Add New Opportunity
+          {formTitle}
           </h2>
 
           <p className="mt-3 max-w-2xl leading-7 text-blue-100">
@@ -308,7 +313,7 @@ export default function OpportunityForm({ onSubmit }) {
             disabled={isSubmitting}
             className="rounded-2xl bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-1 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
           >
-            {isSubmitting ? "Submitting..." : "Submit Opportunity"}
+        {isSubmitting ? "Submitting..." : submitLabel}
           </button>
 
           <button
