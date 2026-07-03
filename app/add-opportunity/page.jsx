@@ -14,41 +14,29 @@ export default function AddOpportunityPage() {
 
   // This function runs after the form validation is successful
   function handleAddOpportunity(data) {
-    // Read existing user-created opportunities from LocalStorage
     const storedOpportunities =
       JSON.parse(localStorage.getItem("customOpportunities")) || [];
 
-    // Create a new opportunity object with a unique id
     const newOpportunity = {
       id: Date.now().toString(),
       ...data,
-
-      // Convert comma-separated requirements text into an array
       requirements: data.requirements.split(",").map((item) => item.trim()),
-
-      // Convert comma-separated tags text into an array
       tags: data.tags.split(",").map((item) => item.trim()),
     };
 
-    // Add the new opportunity to the previous saved opportunities
     const updatedOpportunities = [...storedOpportunities, newOpportunity];
 
-    // Save the updated opportunities list back to LocalStorage
     localStorage.setItem(
       "customOpportunities",
       JSON.stringify(updatedOpportunities)
     );
 
-    // Show success message to the user
     alert("Opportunity submitted successfully!");
-
-    // Redirect user to the opportunities page
     router.push("/opportunities");
   }
-  
 
   return (
-    <main className="bg-gray-50">
+    <main className="page-bg">
       {/* Page hero section */}
       <section className="bg-gradient-to-r from-blue-700 to-indigo-700 px-4 py-16 text-white sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -72,42 +60,29 @@ export default function AddOpportunityPage() {
       <section className="px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_380px]">
           {/* Left side: reusable opportunity form */}
-          <div>
-            <OpportunityForm onSubmit={handleAddOpportunity} />
-          </div>
+          <OpportunityForm onSubmit={handleAddOpportunity} />
 
           {/* Right side: information cards */}
           <aside className="space-y-6">
-            {/* Submission guidelines card */}
-            <div className="rounded-3xl border bg-white p-6 shadow-sm">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
-                <FaClipboardList />
-              </div>
+            <InfoCard
+              icon={<FaClipboardList />}
+              iconClass="bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300"
+              title="Submission Guidelines"
+              text="Make sure the opportunity information is clear, useful, and safe for users before submitting it."
+              list={[
+                "Use a clear and specific title.",
+                "Add the correct category and type.",
+                "Include a valid apply link.",
+                "Write requirements in a simple way.",
+              ]}
+            />
 
-              <h2 className="mt-5 text-xl font-bold text-gray-900">
-                Submission Guidelines
-              </h2>
-
-              <p className="mt-3 leading-7 text-gray-600">
-                Make sure the opportunity information is clear, useful, and
-                safe for users before submitting it.
-              </p>
-
-              <ul className="mt-5 space-y-3 text-sm text-gray-600">
-                <li>• Use a clear and specific title.</li>
-                <li>• Add the correct category and type.</li>
-                <li>• Include a valid apply link.</li>
-                <li>• Write requirements in a simple way.</li>
-              </ul>
-            </div>
-
-            {/* Required information card */}
-            <div className="rounded-3xl border bg-white p-6 shadow-sm">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-50 text-green-600">
+            <div className="card-bg border-soft hover-card rounded-3xl p-6 shadow-sm">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-300">
                 <FaCheckCircle />
               </div>
 
-              <h2 className="mt-5 text-xl font-bold text-gray-900">
+              <h2 className="mt-5 text-xl font-bold">
                 Required Information
               </h2>
 
@@ -126,7 +101,7 @@ export default function AddOpportunityPage() {
                 ].map((item) => (
                   <span
                     key={item}
-                    className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
+                    className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300"
                   >
                     {item}
                   </span>
@@ -134,40 +109,47 @@ export default function AddOpportunityPage() {
               </div>
             </div>
 
-            {/* Helpful tip card */}
-            <div className="rounded-3xl border bg-white p-6 shadow-sm">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-yellow-50 text-yellow-600">
-                <FaLightbulb />
-              </div>
+            <InfoCard
+              icon={<FaLightbulb />}
+              iconClass="bg-yellow-50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-300"
+              title="Helpful Tip"
+              text="If the data is only for testing, clearly treat it as demo data so users understand it is not a real opportunity."
+            />
 
-              <h2 className="mt-5 text-xl font-bold text-gray-900">
-                Helpful Tip
-              </h2>
-
-              <p className="mt-3 leading-7 text-gray-600">
-                If the data is only for testing, clearly treat it as demo data
-                so users understand it is not a real opportunity.
-              </p>
-            </div>
-
-            {/* Safety note card */}
-            <div className="rounded-3xl border bg-white p-6 shadow-sm">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-600">
-                <FaShieldAlt />
-              </div>
-
-              <h2 className="mt-5 text-xl font-bold text-gray-900">
-                Safety Note
-              </h2>
-
-              <p className="mt-3 leading-7 text-gray-600">
-                Avoid fake or unclear opportunities. Only submit information
-                that looks accurate, useful, and appropriate for the platform.
-              </p>
-            </div>
+            <InfoCard
+              icon={<FaShieldAlt />}
+              iconClass="bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-300"
+              title="Safety Note"
+              text="Avoid fake or unclear opportunities. Only submit information that looks accurate, useful, and appropriate for the platform."
+            />
           </aside>
         </div>
       </section>
     </main>
+  );
+}
+
+/* Reusable sidebar information card */
+function InfoCard({ icon, iconClass, title, text, list }) {
+  return (
+    <div className="card-bg border-soft hover-card rounded-3xl p-6 shadow-sm">
+      <div
+        className={`flex h-12 w-12 items-center justify-center rounded-2xl ${iconClass}`}
+      >
+        {icon}
+      </div>
+
+      <h2 className="mt-5 text-xl font-bold">{title}</h2>
+
+      <p className="text-muted mt-3 leading-7">{text}</p>
+
+      {list && (
+        <ul className="text-muted mt-5 space-y-3 text-sm">
+          {list.map((item) => (
+            <li key={item}>• {item}</li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

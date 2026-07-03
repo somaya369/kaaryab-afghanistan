@@ -14,7 +14,7 @@ import {
   FaTags,
 } from "react-icons/fa";
 
-/* Validation schema for all required form fields */
+/* Validation schema */
 const opportunitySchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters."),
   organization: z.string().min(3, "Organization name is required."),
@@ -32,22 +32,20 @@ const opportunitySchema = z.object({
 function TextInput({ label, icon, error, ...props }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-semibold text-gray-700">
-        {label}
-      </label>
+      <label className="mb-2 block text-sm font-semibold">{label}</label>
 
       <div
-        className={`flex items-center rounded-2xl border bg-white px-4 shadow-sm transition focus-within:ring-4 ${
+        className={`flex items-center rounded-2xl border px-4 shadow-sm transition focus-within:ring-4 ${
           error
-            ? "border-red-400 focus-within:ring-red-100"
-            : "border-gray-200 focus-within:border-blue-500 focus-within:ring-blue-100"
+            ? "border-red-400 bg-white focus-within:ring-red-100 dark:bg-gray-800 dark:focus-within:ring-red-900/30"
+            : "border-gray-200 bg-white focus-within:border-blue-500 focus-within:ring-blue-100 dark:border-gray-700 dark:bg-gray-800 dark:focus-within:ring-blue-900/30"
         }`}
       >
-        <span className="mr-3 text-blue-500">{icon}</span>
+        <span className="mr-3 text-blue-500 dark:text-blue-400">{icon}</span>
 
         <input
           {...props}
-          className="w-full bg-transparent py-4 text-gray-800 outline-none placeholder:text-gray-400"
+          className="w-full bg-transparent py-4 text-gray-800 outline-none placeholder:text-gray-400 dark:text-white"
         />
       </div>
 
@@ -60,16 +58,14 @@ function TextInput({ label, icon, error, ...props }) {
 function SelectInput({ label, error, children, ...props }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-semibold text-gray-700">
-        {label}
-      </label>
+      <label className="mb-2 block text-sm font-semibold">{label}</label>
 
       <select
         {...props}
-        className={`w-full rounded-2xl border bg-white px-4 py-4 text-gray-800 shadow-sm outline-none transition focus:ring-4 ${
+        className={`w-full rounded-2xl border px-4 py-4 shadow-sm outline-none transition focus:ring-4 ${
           error
-            ? "border-red-400 focus:border-red-500 focus:ring-red-100"
-            : "border-gray-200 focus:border-blue-500 focus:ring-blue-100"
+            ? "border-red-400 bg-white text-gray-800 focus:ring-red-100 dark:bg-gray-800 dark:text-white dark:focus:ring-red-900/30"
+            : "border-gray-200 bg-white text-gray-800 focus:border-blue-500 focus:ring-blue-100 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:ring-blue-900/30"
         }`}
       >
         {children}
@@ -84,16 +80,14 @@ function SelectInput({ label, error, children, ...props }) {
 function TextAreaInput({ label, error, ...props }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-semibold text-gray-700">
-        {label}
-      </label>
+      <label className="mb-2 block text-sm font-semibold">{label}</label>
 
       <textarea
         {...props}
-        className={`w-full rounded-2xl border px-4 py-4 text-gray-800 shadow-sm outline-none transition placeholder:text-gray-400 focus:ring-4 ${
+        className={`w-full rounded-2xl border px-4 py-4 shadow-sm outline-none transition placeholder:text-gray-400 focus:ring-4 ${
           error
-            ? "border-red-400 focus:border-red-500 focus:ring-red-100"
-            : "border-gray-200 focus:border-blue-500 focus:ring-blue-100"
+            ? "border-red-400 bg-white text-gray-800 focus:ring-red-100 dark:bg-gray-800 dark:text-white dark:focus:ring-red-900/30"
+            : "border-gray-200 bg-white text-gray-800 focus:border-blue-500 focus:ring-blue-100 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:focus:ring-blue-900/30"
         }`}
       />
 
@@ -108,20 +102,21 @@ export default function OpportunityForm({
   defaultValues,
   formTitle = "Add New Opportunity",
   submitLabel = "Submit Opportunity",
-}) {const {
-  register,
-  handleSubmit,
-  formState: { errors, isSubmitting },
-  reset,
-} = useForm({
-  resolver: zodResolver(opportunitySchema),
-  defaultValues: defaultValues,
-});
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm({
+    resolver: zodResolver(opportunitySchema),
+    defaultValues,
+  });
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="overflow-hidden rounded-[2rem] border border-gray-200 bg-white shadow-xl"
+      className="card-bg border-soft overflow-hidden rounded-[2rem] shadow-xl"
     >
       {/* Form header */}
       <div className="relative overflow-hidden bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 px-6 py-10 text-white sm:px-10">
@@ -135,7 +130,7 @@ export default function OpportunityForm({
           </span>
 
           <h2 className="mt-6 text-3xl font-extrabold md:text-4xl">
-          {formTitle}
+            {formTitle}
           </h2>
 
           <p className="mt-3 max-w-2xl leading-7 text-blue-100">
@@ -146,69 +141,40 @@ export default function OpportunityForm({
       </div>
 
       {/* Helpful information cards */}
-      <div className="grid gap-4 border-b bg-gray-50 p-6 sm:grid-cols-3 sm:p-8">
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <FaCheckCircle className="text-xl text-blue-600" />
-          <h3 className="mt-3 font-bold text-gray-900">Required Fields</h3>
-          <p className="mt-2 text-sm leading-6 text-gray-600">
-            Fill all required fields before submitting the opportunity.
-          </p>
-        </div>
+      <div className="grid gap-4 border-b border-gray-200 bg-gray-50 p-6 dark:border-gray-800 dark:bg-gray-950 sm:grid-cols-3 sm:p-8">
+        <InfoCard
+          icon={<FaCheckCircle />}
+          title="Required Fields"
+          text="Fill all required fields before submitting the opportunity."
+        />
 
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <FaCalendarAlt className="text-xl text-blue-600" />
-          <h3 className="mt-3 font-bold text-gray-900">Valid Deadline</h3>
-          <p className="mt-2 text-sm leading-6 text-gray-600">
-            Add a clear deadline so users know when to apply.
-          </p>
-        </div>
+        <InfoCard
+          icon={<FaCalendarAlt />}
+          title="Valid Deadline"
+          text="Add a clear deadline so users know when to apply."
+        />
 
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <FaLink className="text-xl text-blue-600" />
-          <h3 className="mt-3 font-bold text-gray-900">Apply Link</h3>
-          <p className="mt-2 text-sm leading-6 text-gray-600">
-            Use a valid application link for users to apply safely.
-          </p>
-        </div>
+        <InfoCard
+          icon={<FaLink />}
+          title="Apply Link"
+          text="Use a valid application link for users to apply safely."
+        />
       </div>
 
       {/* Form body */}
       <div className="space-y-10 p-6 sm:p-10">
         {/* Basic information section */}
         <section>
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold text-gray-900">
-              Basic Information
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Add the main details about the opportunity.
-            </p>
-          </div>
+          <SectionTitle
+            title="Basic Information"
+            text="Add the main details about the opportunity."
+          />
 
           <div className="grid gap-6 md:grid-cols-2">
-            <TextInput
-              label="Title"
-              type="text"
-              placeholder="Frontend Developer Intern"
-              icon={<FaBriefcase />}
-              error={errors.title}
-              {...register("title")}
-            />
+            <TextInput label="Title" type="text" placeholder="Frontend Developer Intern" icon={<FaBriefcase />} error={errors.title} {...register("title")} />
+            <TextInput label="Organization" type="text" placeholder="Kabul Tech Community" icon={<FaBuilding />} error={errors.organization} {...register("organization")} />
 
-            <TextInput
-              label="Organization"
-              type="text"
-              placeholder="Kabul Tech Community"
-              icon={<FaBuilding />}
-              error={errors.organization}
-              {...register("organization")}
-            />
-
-            <SelectInput
-              label="Category"
-              error={errors.category}
-              {...register("category")}
-            >
+            <SelectInput label="Category" error={errors.category} {...register("category")}>
               <option value="">Select Category</option>
               <option>Job</option>
               <option>Internship</option>
@@ -225,106 +191,69 @@ export default function OpportunityForm({
               <option>On-site</option>
             </SelectInput>
 
-            <TextInput
-              label="Location"
-              type="text"
-              placeholder="Kabul / Online"
-              icon={<FaMapMarkerAlt />}
-              error={errors.location}
-              {...register("location")}
-            />
-
-            <TextInput
-              label="Deadline"
-              type="date"
-              icon={<FaCalendarAlt />}
-              error={errors.deadline}
-              {...register("deadline")}
-            />
+            <TextInput label="Location" type="text" placeholder="Kabul / Online" icon={<FaMapMarkerAlt />} error={errors.location} {...register("location")} />
+            <TextInput label="Deadline" type="date" icon={<FaCalendarAlt />} error={errors.deadline} {...register("deadline")} />
           </div>
         </section>
 
         {/* Opportunity details section */}
         <section>
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold text-gray-900">
-              Opportunity Details
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Explain the opportunity and list the main requirements.
-            </p>
-          </div>
+          <SectionTitle
+            title="Opportunity Details"
+            text="Explain the opportunity and list the main requirements."
+          />
 
           <div className="space-y-6">
-            <TextAreaInput
-              label="Description"
-              rows="5"
-              placeholder="Write a clear description about this opportunity..."
-              error={errors.description}
-              {...register("description")}
-            />
-
-            <TextAreaInput
-              label="Requirements"
-              rows="4"
-              placeholder="React, GitHub, HTML/CSS"
-              error={errors.requirements}
-              {...register("requirements")}
-            />
+            <TextAreaInput label="Description" rows="5" placeholder="Write a clear description about this opportunity..." error={errors.description} {...register("description")} />
+            <TextAreaInput label="Requirements" rows="4" placeholder="React, GitHub, HTML/CSS" error={errors.requirements} {...register("requirements")} />
           </div>
         </section>
 
         {/* Application information section */}
         <section>
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold text-gray-900">
-              Application Information
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Add the application link and helpful tags.
-            </p>
-          </div>
+          <SectionTitle
+            title="Application Information"
+            text="Add the application link and helpful tags."
+          />
 
           <div className="grid gap-6 md:grid-cols-2">
-            <TextInput
-              label="Apply Link"
-              type="url"
-              placeholder="https://example.com/apply"
-              icon={<FaLink />}
-              error={errors.applyLink}
-              {...register("applyLink")}
-            />
-
-            <TextInput
-              label="Tags"
-              type="text"
-              placeholder="React, Internship, Remote"
-              icon={<FaTags />}
-              error={errors.tags}
-              {...register("tags")}
-            />
+            <TextInput label="Apply Link" type="url" placeholder="https://example.com/apply" icon={<FaLink />} error={errors.applyLink} {...register("applyLink")} />
+            <TextInput label="Tags" type="text" placeholder="React, Internship, Remote" icon={<FaTags />} error={errors.tags} {...register("tags")} />
           </div>
         </section>
 
         {/* Form actions */}
-        <div className="flex flex-col gap-4 border-t pt-8 sm:flex-row">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="rounded-2xl bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-1 hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
-          >
-        {isSubmitting ? "Submitting..." : submitLabel}
+        <div className="flex flex-col gap-4 border-t border-gray-200 pt-8 dark:border-gray-800 sm:flex-row">
+          <button type="submit" disabled={isSubmitting} className="btn-primary px-8 py-4 disabled:cursor-not-allowed disabled:bg-blue-300">
+            {isSubmitting ? "Submitting..." : submitLabel}
           </button>
 
-          <button
-            type="button"
-            onClick={() => reset()}
-            className="rounded-2xl border border-gray-300 px-8 py-4 font-semibold text-gray-700 transition hover:-translate-y-1 hover:bg-gray-50"
-          >
+          <button type="button" onClick={() => reset()} className="btn-secondary px-8 py-4">
             Reset Form
           </button>
         </div>
       </div>
     </form>
+  );
+}
+
+/* Reusable information card */
+function InfoCard({ icon, title, text }) {
+  return (
+    <div className="card-bg border-soft rounded-2xl p-5 shadow-sm">
+      <div className="text-xl text-blue-600 dark:text-blue-400">{icon}</div>
+      <h3 className="mt-3 font-bold">{title}</h3>
+      <p className="text-muted mt-2 text-sm leading-6">{text}</p>
+    </div>
+  );
+}
+
+/* Reusable section title */
+function SectionTitle({ title, text }) {
+  return (
+    <div className="mb-6">
+      <h3 className="text-2xl font-bold">{title}</h3>
+      <p className="text-muted mt-2">{text}</p>
+    </div>
   );
 }

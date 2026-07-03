@@ -6,25 +6,13 @@ import OpportunityCard from "@/components/OpportunityCard";
 import { opportunities } from "@/data/opportunities";
 
 export default function OpportunitiesPage() {
-  // Store all opportunities from sample data and LocalStorage
   const [allOpportunities, setAllOpportunities] = useState(opportunities);
-
-  // Store search text
   const [search, setSearch] = useState("");
-
-  // Store selected category
   const [category, setCategory] = useState("All Categories");
-
-  // Store selected type
   const [type, setType] = useState("All Types");
-
-  // Control delete confirmation modal
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Store selected opportunity id for deletion
   const [selectedId, setSelectedId] = useState(null);
 
-  // Category tabs data
   const categoryTabs = [
     "All Categories",
     "Job",
@@ -36,7 +24,6 @@ export default function OpportunitiesPage() {
     "Volunteer Work",
   ];
 
-  // Load custom opportunities from LocalStorage when the page opens
   useEffect(() => {
     const storedOpportunities =
       JSON.parse(localStorage.getItem("customOpportunities")) || [];
@@ -44,7 +31,6 @@ export default function OpportunitiesPage() {
     setAllOpportunities([...opportunities, ...storedOpportunities]);
   }, []);
 
-  // Filter opportunities based on search, category, and type
   const filteredOpportunities = allOpportunities.filter((opportunity) => {
     const matchesSearch = opportunity.title
       .toLowerCase()
@@ -58,13 +44,11 @@ export default function OpportunitiesPage() {
     return matchesSearch && matchesCategory && matchesType;
   });
 
-  // Open delete confirmation modal
   function openDeleteModal(id) {
     setSelectedId(id);
     setIsModalOpen(true);
   }
 
-  // Delete opportunity from LocalStorage
   function handleDelete() {
     const storedOpportunities =
       JSON.parse(localStorage.getItem("customOpportunities")) || [];
@@ -79,22 +63,19 @@ export default function OpportunitiesPage() {
     );
 
     setAllOpportunities([...opportunities, ...updatedOpportunities]);
-
     setIsModalOpen(false);
     setSelectedId(null);
   }
 
   return (
     <>
-      <main className="bg-gray-50">
+      <main className="page-bg">
         {/* Page Header */}
-        <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
+        <section className="section-bg px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl text-center">
-            <h1 className="text-4xl font-bold text-gray-900">
-              Explore Opportunities
-            </h1>
+            <h1 className="text-4xl font-bold">Explore Opportunities</h1>
 
-            <p className="mx-auto mt-4 max-w-2xl text-gray-600">
+            <p className="text-muted mx-auto mt-4 max-w-2xl">
               Browse jobs, internships, scholarships, remote work, and learning
               opportunities in one place.
             </p>
@@ -103,33 +84,30 @@ export default function OpportunitiesPage() {
 
         {/* Search and Filter Section */}
         <section className="px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl rounded-2xl border bg-white p-6 shadow-sm">
+          <div className="card-bg border-soft mx-auto max-w-7xl rounded-2xl p-6 shadow-sm">
             <div className="grid gap-4 md:grid-cols-4">
-              {/* Search input */}
               <input
                 type="text"
                 placeholder="Search by title..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500 md:col-span-2"
+                className="input-style md:col-span-2"
               />
 
-              {/* Category filter dropdown */}
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+                className="input-style"
               >
                 {categoryTabs.map((item) => (
                   <option key={item}>{item}</option>
                 ))}
               </select>
 
-              {/* Type filter dropdown */}
               <select
                 value={type}
                 onChange={(e) => setType(e.target.value)}
-                className="rounded-xl border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
+                className="input-style"
               >
                 <option>All Types</option>
                 <option>Remote</option>
@@ -146,7 +124,7 @@ export default function OpportunitiesPage() {
                   className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                     category === item
                       ? "border-blue-600 bg-blue-600 text-white"
-                      : "border-gray-300 bg-white text-gray-700 hover:border-blue-600 hover:text-blue-600"
+                      : "border-gray-300 bg-white text-gray-700 hover:border-blue-600 hover:text-blue-600 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-blue-400 dark:hover:text-blue-300"
                   }`}
                 >
                   {item}
@@ -160,11 +138,9 @@ export default function OpportunitiesPage() {
         <section className="px-4 pb-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-bold text-gray-900">
-                All Opportunities
-              </h2>
+              <h2 className="text-2xl font-bold">All Opportunities</h2>
 
-              <p className="text-sm text-gray-600">
+              <p className="text-muted text-sm">
                 {filteredOpportunities.length} results found
               </p>
             </div>
@@ -180,15 +156,14 @@ export default function OpportunitiesPage() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-2xl border bg-white p-8 text-center text-gray-600">
-                No opportunities found.
+              <div className="card-bg border-soft rounded-2xl p-8 text-center">
+                <p className="text-muted">No opportunities found.</p>
               </div>
             )}
           </div>
         </section>
       </main>
 
-      {/* Delete confirmation modal */}
       <Modal
         isOpen={isModalOpen}
         title="Delete Opportunity"

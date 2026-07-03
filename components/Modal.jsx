@@ -1,36 +1,63 @@
 "use client";
 
+import { FaExclamationTriangle } from "react-icons/fa";
+
 // Reusable confirmation modal component
-export default function Modal({ isOpen, title, message, onCancel, onConfirm }) {
-  // If modal is not open, do not show anything
+export default function Modal({
+  isOpen,
+  title,
+  message,
+  onCancel,
+  onConfirm,
+}) {
+  // Hide modal when it is closed
   if (!isOpen) return null;
 
   return (
-    // Dark background overlay
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-      {/* Modal box */}
-      <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl">
+    // Modal background overlay
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+      
+      {/* Modal content box */}
+      <div className="card-bg border-soft w-full max-w-md rounded-3xl p-6 shadow-2xl">
+        
+        {/* Warning icon */}
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-2xl text-red-600 dark:bg-red-900/30 dark:text-red-300">
+          <FaExclamationTriangle />
+        </div>
+
+
         {/* Modal title */}
-        <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+        <h2 className="mt-5 text-2xl font-bold">
+          {title}
+        </h2>
+
 
         {/* Modal message */}
-        <p className="mt-3 text-gray-600">{message}</p>
+        <p className="text-muted mt-3 leading-7">
+          {message}
+        </p>
+
 
         {/* Modal buttons */}
         <div className="mt-8 flex justify-end gap-3">
+          
           <button
             onClick={onCancel}
-            className="rounded-xl border border-gray-300 px-5 py-2 font-medium text-gray-700 hover:bg-gray-50"
+            aria-label="Cancel action"
+            className="btn-secondary"
           >
             Cancel
           </button>
 
+
           <button
             onClick={onConfirm}
-            className="rounded-xl bg-red-600 px-5 py-2 font-medium text-white hover:bg-red-700"
+            aria-label="Confirm delete"
+            className="rounded-xl bg-red-600 px-6 py-3 font-medium text-white transition hover:bg-red-700"
           >
             Delete
           </button>
+
         </div>
       </div>
     </div>

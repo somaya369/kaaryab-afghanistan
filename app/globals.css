@@ -1,26 +1,93 @@
 @import "tailwindcss";
+
+/* Enable class based dark mode for Tailwind v4 */
 @custom-variant dark (&:where(.dark, .dark *));
 
+
+/* Global styles */
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Reusable page background */
+
+/* ===============================
+   Reusable Theme Classes
+   =============================== */
+
+
+/* Main page background */
 .page-bg {
-  @apply bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+  @apply bg-gray-50 text-gray-900 
+  dark:bg-gray-950 dark:text-gray-100 
+  transition-colors duration-300;
 }
 
-/* Reusable white card */
+
+/* Card background */
 .card-bg {
-  @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-white;
+  @apply bg-white text-gray-900 
+  dark:bg-gray-900 dark:text-white 
+  transition-colors duration-300;
 }
 
-/* Reusable muted text */
+
+/* Secondary sections */
+.section-bg {
+  @apply bg-white 
+  dark:bg-gray-900 
+  transition-colors duration-300;
+}
+
+
+/* Secondary text */
 .text-muted {
-  @apply text-gray-600 dark:text-gray-300;
+  @apply text-gray-600 
+  dark:text-gray-300;
 }
 
-/* Reusable border */
+
+/* Soft border */
 .border-soft {
-  @apply border border-gray-200 dark:border-gray-800;
+  @apply border border-gray-200 
+  dark:border-gray-800;
+}
+
+
+/* Input style */
+.input-style {
+  @apply rounded-xl border border-gray-300 
+  bg-white px-4 py-3 
+  text-gray-900 outline-none 
+  focus:border-blue-500
+  dark:border-gray-700 
+  dark:bg-gray-800 
+  dark:text-white;
+}
+
+
+/* Primary button */
+.btn-primary {
+  @apply rounded-xl bg-blue-600 
+  px-6 py-3 font-medium text-white 
+  transition hover:bg-blue-700;
+}
+
+
+/* Secondary button */
+.btn-secondary {
+  @apply rounded-xl border border-gray-300 
+  px-6 py-3 font-medium 
+  text-gray-700 
+  hover:bg-gray-100
+  dark:border-gray-700
+  dark:text-gray-200
+  dark:hover:bg-gray-800;
+}
+
+
+/* Smooth hover card effect */
+.hover-card {
+  @apply transition duration-300 
+  hover:-translate-y-1 
+  hover:shadow-lg;
 }
