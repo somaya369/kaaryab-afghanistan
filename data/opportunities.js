@@ -12,6 +12,7 @@ export const opportunities = [
     requirements: ["Basic React", "HTML/CSS", "GitHub"],
     applyLink: "https://example.com/apply",
     tags: ["React", "Next.js", "Internship"],
+    featured: true,
   },
   {
     id: "2",
@@ -26,6 +27,7 @@ export const opportunities = [
     requirements: ["Basic English", "Motivation letter", "Internet access"],
     applyLink: "https://example.com/scholarship",
     tags: ["Scholarship", "Women", "Online"],
+    featured: true,
   },
   {
     id: "3",
@@ -40,6 +42,7 @@ export const opportunities = [
     requirements: ["HTML", "CSS", "JavaScript", "Basic React"],
     applyLink: "https://example.com/web-developer",
     tags: ["Job", "Web Development", "JavaScript"],
+    featured: true,
   },
   {
     id: "4",
@@ -54,6 +57,7 @@ export const opportunities = [
     requirements: ["Basic English", "Internet access", "Weekly attendance"],
     applyLink: "https://example.com/english-course",
     tags: ["Online Course", "English", "Learning"],
+    featured: false,
   },
   {
     id: "5",
@@ -68,6 +72,7 @@ export const opportunities = [
     requirements: ["Typing skills", "Computer basics", "Attention to detail"],
     applyLink: "https://example.com/data-entry",
     tags: ["Remote Work", "Data Entry", "Online"],
+    featured: true,
   },
   {
     id: "6",
@@ -82,6 +87,7 @@ export const opportunities = [
     requirements: ["Basic computer skills", "Interest in marketing"],
     applyLink: "https://example.com/digital-marketing",
     tags: ["Training", "Marketing", "Skills"],
+    featured: false,
   },
   {
     id: "7",
@@ -96,6 +102,7 @@ export const opportunities = [
     requirements: ["Communication skills", "Patience", "Basic teaching ability"],
     applyLink: "https://example.com/volunteer-teaching",
     tags: ["Volunteer", "Education", "Teaching"],
+    featured: false,
   },
   {
     id: "8",
@@ -110,5 +117,6 @@ export const opportunities = [
     requirements: ["Node.js basics", "Express.js", "GitHub"],
     applyLink: "https://example.com/backend-intern",
     tags: ["Internship", "Backend", "Node.js"],
+    featured: false,
   },
 ];

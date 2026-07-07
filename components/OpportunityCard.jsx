@@ -11,6 +11,7 @@ import {
   FaArrowRight,
   FaTrash,
   FaEdit,
+  FaStar,
 } from "react-icons/fa";
 
 export default function OpportunityCard({ opportunity, onDelete }) {
@@ -21,10 +22,19 @@ export default function OpportunityCard({ opportunity, onDelete }) {
   return (
     <div className="card-bg border-soft hover-card group relative overflow-hidden rounded-3xl p-6 shadow-sm">
       {/* Top section: category badge and save button */}
-      <div className="flex items-center justify-between">
-        <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-          {opportunity.category}
-        </span>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-wrap gap-2">
+          <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+            {opportunity.category}
+          </span>
+
+          {opportunity.featured && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700 ring-1 ring-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:ring-amber-800">
+              <FaStar className="text-xs" />
+              Featured
+            </span>
+          )}
+        </div>
 
         <button
           onClick={() =>

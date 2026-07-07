@@ -8,6 +8,7 @@ import {
   FaClipboardList,
   FaClock,
   FaRocket,
+  FaStar,
 } from "react-icons/fa";
 import {
   BarChart,
@@ -25,16 +26,20 @@ export default function DashboardPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    try {
-      const storedOpportunities =
-        JSON.parse(localStorage.getItem("customOpportunities")) || [];
+    const timeoutId = window.setTimeout(() => {
+      try {
+        const storedOpportunities =
+          JSON.parse(localStorage.getItem("customOpportunities")) || [];
 
-      setAllOpportunities([...opportunities, ...storedOpportunities]);
-      setIsLoading(false);
-    } catch {
-      setError("Something went wrong while loading dashboard data.");
-      setIsLoading(false);
-    }
+        setAllOpportunities([...opportunities, ...storedOpportunities]);
+        setIsLoading(false);
+      } catch {
+        setError("Something went wrong while loading dashboard data.");
+        setIsLoading(false);
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   const totalOpportunities = allOpportunities.length;
@@ -42,6 +47,7 @@ export default function DashboardPage() {
   const totalScholarships = allOpportunities.filter((item) => item.category === "Scholarship").length;
   const totalInternships = allOpportunities.filter((item) => item.category === "Internship").length;
   const totalRemote = allOpportunities.filter((item) => item.type === "Remote").length;
+  const totalFeatured = allOpportunities.filter((item) => item.featured).length;
   const recentSubmissions = allOpportunities.slice(-5).reverse();
 
   const chartData = [
@@ -123,6 +129,7 @@ export default function DashboardPage() {
           <DashboardCard title="Scholarships" value={totalScholarships} icon={<FaGraduationCap />} />
           <DashboardCard title="Internships" value={totalInternships} icon={<FaRocket />} />
           <DashboardCard title="Remote Opportunities" value={totalRemote} icon={<FaLaptopHouse />} />
+          <DashboardCard title="Featured" value={totalFeatured} icon={<FaStar />} />
           <DashboardCard title="Recent Submissions" value={recentSubmissions.length} icon={<FaClock />} />
         </div>
       </section>
@@ -177,6 +184,7 @@ export default function DashboardPage() {
                     <th className="pb-4">Category</th>
                     <th className="pb-4">Location</th>
                     <th className="pb-4">Type</th>
+                    <th className="pb-4">Featured</th>
                     <th className="pb-4">Deadline</th>
                   </tr>
                 </thead>
@@ -191,6 +199,9 @@ export default function DashboardPage() {
                       <td className="text-muted py-5">{item.category}</td>
                       <td className="text-muted py-5">{item.location}</td>
                       <td className="text-muted py-5">{item.type}</td>
+                      <td className="text-muted py-5">
+                        {item.featured ? "Yes" : "No"}
+                      </td>
                       <td className="text-muted py-5">{item.deadline}</td>
                     </tr>
                   ))}
@@ -203,4 +214,3 @@ export default function DashboardPage() {
     </main>
   );
 }
-

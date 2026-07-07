@@ -19,24 +19,27 @@ export default function EditOpportunityPage() {
 
   // Load opportunity from default data + LocalStorage
   useEffect(() => {
-    const storedOpportunities =
-      JSON.parse(localStorage.getItem("customOpportunities")) || [];
+    const timeoutId = window.setTimeout(() => {
+      const storedOpportunities =
+        JSON.parse(localStorage.getItem("customOpportunities")) || [];
 
 
-    const allOpportunities = [
-      ...opportunities,
-      ...storedOpportunities,
-    ];
+      const allOpportunities = [
+        ...opportunities,
+        ...storedOpportunities,
+      ];
 
 
-    const foundOpportunity = allOpportunities.find(
-      (item) => String(item.id) === String(params.id)
-    );
+      const foundOpportunity = allOpportunities.find(
+        (item) => String(item.id) === String(params.id)
+      );
 
 
-    setOpportunity(foundOpportunity);
-    setIsLoading(false);
+      setOpportunity(foundOpportunity);
+      setIsLoading(false);
+    }, 0);
 
+    return () => window.clearTimeout(timeoutId);
   }, [params.id]);
 
 
@@ -58,6 +61,8 @@ export default function EditOpportunityPage() {
       tags: data.tags
         .split(",")
         .map((item) => item.trim()),
+
+      featured: Boolean(data.featured),
     };
 
 
@@ -215,6 +220,8 @@ export default function EditOpportunityPage() {
               requirements: opportunity.requirements.join(", "),
 
               tags: opportunity.tags.join(", "),
+
+              featured: Boolean(opportunity.featured),
             }}
 
 

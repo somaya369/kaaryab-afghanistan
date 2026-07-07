@@ -19,6 +19,10 @@ import {
 } from "react-icons/md";
 
 export default function HomePage() {
+  const featuredOpportunities = opportunities
+    .filter((opportunity) => opportunity.featured)
+    .slice(0, 4);
+
   const categories = [
     { name: "Job", icon: <FaBriefcase /> },
     { name: "Internship", icon: <MdWorkOutline /> },
@@ -142,7 +146,7 @@ export default function HomePage() {
           />
 
           <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {opportunities.slice(0, 4).map((opportunity) => (
+            {featuredOpportunities.map((opportunity) => (
               <OpportunityCard key={opportunity.id} opportunity={opportunity} />
             ))}
           </div>

@@ -10,6 +10,7 @@ export default function OpportunitiesPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Categories");
   const [type, setType] = useState("All Types");
+  const [featured, setFeatured] = useState("All Opportunities");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
@@ -25,10 +26,14 @@ export default function OpportunitiesPage() {
   ];
 
   useEffect(() => {
-    const storedOpportunities =
-      JSON.parse(localStorage.getItem("customOpportunities")) || [];
+    const timeoutId = window.setTimeout(() => {
+      const storedOpportunities =
+        JSON.parse(localStorage.getItem("customOpportunities")) || [];
 
-    setAllOpportunities([...opportunities, ...storedOpportunities]);
+      setAllOpportunities([...opportunities, ...storedOpportunities]);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   const filteredOpportunities = allOpportunities.filter((opportunity) => {
@@ -41,7 +46,10 @@ export default function OpportunitiesPage() {
 
     const matchesType = type === "All Types" || opportunity.type === type;
 
-    return matchesSearch && matchesCategory && matchesType;
+    const matchesFeatured =
+      featured === "All Opportunities" || opportunity.featured;
+
+    return matchesSearch && matchesCategory && matchesType && matchesFeatured;
   });
 
   function openDeleteModal(id) {
@@ -85,7 +93,7 @@ export default function OpportunitiesPage() {
         {/* Search and Filter Section */}
         <section className="px-4 py-8 sm:px-6 lg:px-8">
           <div className="card-bg border-soft mx-auto max-w-7xl rounded-2xl p-6 shadow-sm">
-            <div className="grid gap-4 md:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-5">
               <input
                 type="text"
                 placeholder="Search by title..."
@@ -112,6 +120,15 @@ export default function OpportunitiesPage() {
                 <option>All Types</option>
                 <option>Remote</option>
                 <option>On-site</option>
+              </select>
+
+              <select
+                value={featured}
+                onChange={(e) => setFeatured(e.target.value)}
+                className="input-style"
+              >
+                <option>All Opportunities</option>
+                <option>Featured Only</option>
               </select>
             </div>
 

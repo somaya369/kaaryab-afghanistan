@@ -11,6 +11,7 @@ import {
   FaInfoCircle,
   FaLink,
   FaMapMarkerAlt,
+  FaStar,
   FaTags,
 } from "react-icons/fa";
 
@@ -26,6 +27,7 @@ const opportunitySchema = z.object({
   requirements: z.string().min(5, "Requirements are required."),
   applyLink: z.string().url("Please enter a valid URL."),
   tags: z.string().min(2, "Tags are required."),
+  featured: z.coerce.boolean().default(false),
 });
 
 /* Reusable text input component */
@@ -220,6 +222,33 @@ export default function OpportunityForm({
             <TextInput label="Apply Link" type="url" placeholder="https://example.com/apply" icon={<FaLink />} error={errors.applyLink} {...register("applyLink")} />
             <TextInput label="Tags" type="text" placeholder="React, Internship, Remote" icon={<FaTags />} error={errors.tags} {...register("tags")} />
           </div>
+        </section>
+
+        {/* Featured badge section */}
+        <section>
+          <SectionTitle
+            title="Featured Badge"
+            text="Mark strong opportunities so they appear in the featured section."
+          />
+
+          <label className="flex cursor-pointer items-start gap-4 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-900 shadow-sm transition hover:border-amber-300 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-100">
+            <input
+              type="checkbox"
+              className="mt-1 h-5 w-5 rounded border-amber-300 text-amber-600 focus:ring-amber-500"
+              {...register("featured")}
+            />
+
+            <span>
+              <span className="inline-flex items-center gap-2 font-bold">
+                <FaStar />
+                Show Featured badge
+              </span>
+
+              <span className="mt-1 block text-sm text-amber-800 dark:text-amber-200">
+                Featured opportunities are highlighted on cards and shown on the homepage.
+              </span>
+            </span>
+          </label>
         </section>
 
         {/* Form actions */}

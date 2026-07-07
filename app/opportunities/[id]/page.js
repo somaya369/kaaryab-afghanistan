@@ -11,6 +11,7 @@ import {
   FaCalendarAlt,
   FaExternalLinkAlt,
   FaMapMarkerAlt,
+  FaStar,
   FaTag,
 } from "react-icons/fa";
 
@@ -23,22 +24,26 @@ export default function OpportunityDetailsPage() {
 
   // Load opportunity data
   useEffect(() => {
-    const storedOpportunities =
-      JSON.parse(localStorage.getItem("customOpportunities")) || [];
+    const timeoutId = window.setTimeout(() => {
+      const storedOpportunities =
+        JSON.parse(localStorage.getItem("customOpportunities")) || [];
 
 
-    const allOpportunities = [
-      ...opportunities,
-      ...storedOpportunities,
-    ];
+      const allOpportunities = [
+        ...opportunities,
+        ...storedOpportunities,
+      ];
 
 
-    const selectedOpportunity = allOpportunities.find(
-      (item) => String(item.id) === String(params.id)
-    );
+      const selectedOpportunity = allOpportunities.find(
+        (item) => String(item.id) === String(params.id)
+      );
 
 
-    setOpportunity(selectedOpportunity);
+      setOpportunity(selectedOpportunity);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [params.id]);
 
 
@@ -91,9 +96,18 @@ export default function OpportunityDetailsPage() {
           </Link>
 
 
-          <span className="mt-8 inline-block rounded-full bg-white/20 px-4 py-2 text-sm">
-            {opportunity.category}
-          </span>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <span className="inline-block rounded-full bg-white/20 px-4 py-2 text-sm">
+              {opportunity.category}
+            </span>
+
+            {opportunity.featured && (
+              <span className="inline-flex items-center gap-2 rounded-full bg-amber-300 px-4 py-2 text-sm font-semibold text-amber-950">
+                <FaStar />
+                Featured
+              </span>
+            )}
+          </div>
 
 
           <h1 className="mt-6 max-w-4xl text-4xl font-extrabold md:text-5xl">

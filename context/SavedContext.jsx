@@ -8,11 +8,15 @@ export function SavedProvider({ children }) {
   const [savedOpportunities, setSavedOpportunities] = useState([]);
 
   useEffect(() => {
-    const storedSaved = localStorage.getItem("savedOpportunities");
+    const timeoutId = window.setTimeout(() => {
+      const storedSaved = localStorage.getItem("savedOpportunities");
 
-    if (storedSaved) {
-      setSavedOpportunities(JSON.parse(storedSaved));
-    }
+      if (storedSaved) {
+        setSavedOpportunities(JSON.parse(storedSaved));
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {

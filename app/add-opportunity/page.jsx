@@ -22,6 +22,7 @@ export default function AddOpportunityPage() {
       ...data,
       requirements: data.requirements.split(",").map((item) => item.trim()),
       tags: data.tags.split(",").map((item) => item.trim()),
+      featured: Boolean(data.featured),
     };
 
     const updatedOpportunities = [...storedOpportunities, newOpportunity];
@@ -98,6 +99,7 @@ export default function AddOpportunityPage() {
                   "Requirements",
                   "Apply Link",
                   "Tags",
+                  "Featured Badge",
                 ].map((item) => (
                   <span
                     key={item}
