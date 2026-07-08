@@ -24,7 +24,7 @@ export async function GET(request, context) {
   });
 }
 
-// Update opportunity
+// Update opportunity demo response
 export async function PUT(request, context) {
   const { id } = await context.params;
   const body = await request.json();
@@ -32,11 +32,14 @@ export async function PUT(request, context) {
   return Response.json({
     success: true,
     message: `Opportunity ${id} updated successfully.`,
-    data: body,
+    data: {
+      id,
+      ...body,
+    },
   });
 }
 
-// Delete opportunity
+// Delete opportunity demo response
 export async function DELETE(request, context) {
   const { id } = await context.params;
 

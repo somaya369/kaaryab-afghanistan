@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import OpportunityCard from "@/components/OpportunityCard";
 import { opportunities } from "@/data/opportunities";
 import {
@@ -19,9 +22,14 @@ import {
 } from "react-icons/md";
 
 export default function HomePage() {
-  const featuredOpportunities = opportunities
-    .filter((opportunity) => opportunity.featured)
+  const homeOpportunities = [...opportunities]
+    .sort((first, second) => Number(second.featured) - Number(first.featured))
     .slice(0, 4);
+
+  const sectionAnimation = {
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0 },
+  };
 
   const categories = [
     { name: "Job", icon: <FaBriefcase /> },
@@ -54,8 +62,18 @@ export default function HomePage() {
   return (
     <main className="page-bg">
       {/* Hero Section */}
-      <section className="px-4 py-10 sm:px-6 lg:px-8">
-        <div className="border-soft relative mx-auto grid max-w-7xl items-center gap-12 overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-8 shadow-sm dark:from-gray-900 dark:via-gray-950 dark:to-blue-950 md:grid-cols-2 md:p-14">
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        variants={sectionAnimation}
+        transition={{ duration: 0.45, ease: "easeOut" }}
+        className="px-4 py-10 sm:px-6 lg:px-8"
+      >
+        <motion.div
+          whileHover={{ scale: 1.005 }}
+          transition={{ duration: 0.25 }}
+          className="border-soft relative mx-auto grid max-w-7xl items-center gap-12 overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-8 shadow-sm dark:from-gray-900 dark:via-gray-950 dark:to-blue-950 md:grid-cols-2 md:p-14"
+        >
           <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-blue-300/20 blur-3xl"></div>
           <div className="absolute -bottom-24 left-10 h-72 w-72 rounded-full bg-indigo-300/20 blur-3xl"></div>
 
@@ -77,17 +95,21 @@ export default function HomePage() {
             </p>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <Link
-                href="/opportunities"
-                className="btn-primary inline-flex items-center justify-center gap-2"
-              >
-                Explore Opportunities
-                <FaArrowRight />
-              </Link>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href="/opportunities"
+                  className="btn-primary inline-flex items-center justify-center gap-2"
+                >
+                  Explore Opportunities
+                  <FaArrowRight />
+                </Link>
+              </motion.div>
 
-              <Link href="/add-opportunity" className="btn-secondary text-center">
-                Submit Opportunity
-              </Link>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}>
+                <Link href="/add-opportunity" className="btn-secondary block text-center">
+                  Submit Opportunity
+                </Link>
+              </motion.div>
             </div>
 
             {/* Small stats */}
@@ -132,29 +154,43 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* Featured Opportunities */}
-      <section className="px-4 py-12 sm:px-6 lg:px-8">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={sectionAnimation}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="px-4 py-12 sm:px-6 lg:px-8"
+      >
         <div className="mx-auto max-w-7xl">
           <SectionHeader
             badge="Featured"
             title="Featured Opportunities"
-            text="Explore selected opportunities for jobs, internships, scholarships, and remote work."
+            text="Featured opportunities are shown first so users can find important options faster."
             href="/opportunities"
           />
 
           <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {featuredOpportunities.map((opportunity) => (
+            {homeOpportunities.map((opportunity) => (
               <OpportunityCard key={opportunity.id} opportunity={opportunity} />
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Categories */}
-      <section className="px-4 py-12 sm:px-6 lg:px-8">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={sectionAnimation}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="px-4 py-12 sm:px-6 lg:px-8"
+      >
         <div className="mx-auto max-w-7xl">
           <SectionHeader
             badge="Categories"
@@ -165,8 +201,10 @@ export default function HomePage() {
 
           <div className="mt-8 grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7">
             {categories.map((category) => (
-              <div
+              <motion.div
                 key={category.name}
+                whileHover={{ y: -5 }}
+                whileTap={{ scale: 0.97 }}
                 className="card-bg border-soft hover-card group rounded-2xl p-6 text-center shadow-sm"
               >
                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-2xl text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white dark:bg-blue-900/30 dark:text-blue-300">
@@ -176,14 +214,21 @@ export default function HomePage() {
                 <h3 className="text-sm font-semibold group-hover:text-blue-700 dark:group-hover:text-blue-300">
                   {category.name}
                 </h3>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Why KaarYab */}
-      <section className="px-4 py-12 sm:px-6 lg:px-8">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={sectionAnimation}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="px-4 py-12 sm:px-6 lg:px-8"
+      >
         <div className="mx-auto max-w-7xl">
           <div className="card-bg border-soft rounded-[2rem] p-8 shadow-sm md:p-10">
             <div className="grid gap-8 md:grid-cols-[1fr_1.3fr]">
@@ -216,10 +261,17 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Final CTA */}
-      <section className="px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={sectionAnimation}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="px-4 py-14 sm:px-6 lg:px-8"
+      >
         <div className="mx-auto max-w-7xl rounded-[2rem] bg-gradient-to-r from-blue-700 to-indigo-700 p-10 text-center text-white shadow-lg">
           <h2 className="text-3xl font-extrabold md:text-4xl">
             Ready to find your next opportunity?
@@ -230,15 +282,17 @@ export default function HomePage() {
             career and education goals.
           </p>
 
-          <Link
-            href="/opportunities"
-            className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-3 font-medium text-blue-700 transition hover:bg-gray-100"
-          >
-            Get Started
-            <FaArrowRight />
-          </Link>
+          <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.97 }}>
+            <Link
+              href="/opportunities"
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-3 font-medium text-blue-700 transition hover:bg-gray-100"
+            >
+              Get Started
+              <FaArrowRight />
+            </Link>
+          </motion.div>
         </div>
-      </section>
+      </motion.section>
     </main>
   );
 }

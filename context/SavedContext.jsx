@@ -1,11 +1,13 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { useToast } from "@/context/ToastContext";
 
 const SavedContext = createContext();
 
 export function SavedProvider({ children }) {
   const [savedOpportunities, setSavedOpportunities] = useState([]);
+  const { showToast } = useToast();
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -33,12 +35,16 @@ export function SavedProvider({ children }) {
 
     if (!alreadySaved) {
       setSavedOpportunities([...savedOpportunities, opportunity]);
+      showToast("Opportunity saved successfully.");
+    } else {
+      showToast("This opportunity is already saved.", "info");
     }
   }
 
   function removeOpportunity(id) {
     const updatedSaved = savedOpportunities.filter((item) => item.id !== id);
     setSavedOpportunities(updatedSaved);
+    showToast("Opportunity removed from saved list.", "info");
   }
 
   function isSaved(id) {

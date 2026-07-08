@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useSaved } from "@/context/SavedContext";
+import { getDeadlineStatus } from "@/lib/utils";
 import {
   FaBookmark,
   FaRegBookmark,
@@ -18,9 +20,17 @@ export default function OpportunityCard({ opportunity, onDelete }) {
   const { saveOpportunity, removeOpportunity, isSaved } = useSaved();
 
   const saved = isSaved(opportunity.id);
+  const deadlineStatus = getDeadlineStatus(opportunity.deadline);
 
   return (
-    <div className="card-bg border-soft hover-card group relative overflow-hidden rounded-3xl p-6 shadow-sm">
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -6 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="card-bg border-soft hover-card group relative overflow-hidden rounded-3xl p-6 shadow-sm"
+    >
       {/* Top section: category badge and save button */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-wrap gap-2">
@@ -31,12 +41,22 @@ export default function OpportunityCard({ opportunity, onDelete }) {
           {opportunity.featured && (
             <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-sm font-semibold text-amber-700 ring-1 ring-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:ring-amber-800">
               <FaStar className="text-xs" />
+              ⭐
               Featured
+            </span>
+          )}
+
+          {deadlineStatus.isExpiringSoon && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-700 ring-1 ring-red-200 dark:bg-red-900/30 dark:text-red-300 dark:ring-red-800">
+              🔥
+              Expiring Soon
             </span>
           )}
         </div>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.94 }}
           onClick={() =>
             saved
               ? removeOpportunity(opportunity.id)
@@ -50,7 +70,7 @@ export default function OpportunityCard({ opportunity, onDelete }) {
           }`}
         >
           {saved ? <FaBookmark /> : <FaRegBookmark />}
-        </button>
+        </motion.button>
       </div>
 
       {/* Opportunity title */}
@@ -79,6 +99,19 @@ export default function OpportunityCard({ opportunity, onDelete }) {
           <FaCalendarAlt className="text-blue-600 dark:text-blue-400" />
           Deadline: {opportunity.deadline}
         </p>
+
+        <p
+          className={`flex items-center gap-2 font-semibold ${
+            deadlineStatus.isExpired
+              ? "text-red-600 dark:text-red-400"
+              : deadlineStatus.isExpiringSoon
+                ? "text-orange-600 dark:text-orange-400"
+                : "text-green-600 dark:text-green-400"
+          }`}
+        >
+          <FaCalendarAlt />
+          {deadlineStatus.text}
+        </p>
       </div>
 
       {/* Tags */}
@@ -95,32 +128,38 @@ export default function OpportunityCard({ opportunity, onDelete }) {
 
       {/* Card action buttons */}
       <div className="mt-6 flex flex-wrap items-center gap-3">
-        <Link
-          href={`/opportunities/${opportunity.id}`}
-          className="inline-flex items-center gap-2 font-medium text-blue-600 transition hover:gap-3 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-        >
-          View Details
-          <FaArrowRight />
-        </Link>
+        <motion.div whileHover={{ x: 4 }} whileTap={{ scale: 0.98 }}>
+          <Link
+            href={`/opportunities/${opportunity.id}`}
+            className="inline-flex items-center gap-2 font-medium text-blue-600 transition hover:gap-3 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          >
+            View Details
+            <FaArrowRight />
+          </Link>
+        </motion.div>
 
-        <Link
-          href={`/edit-opportunity/${opportunity.id}`}
-          className="inline-flex items-center gap-2 rounded-xl bg-yellow-50 px-4 py-2 text-sm font-medium text-yellow-700 transition hover:bg-yellow-100 dark:bg-yellow-900/20 dark:text-yellow-300 dark:hover:bg-yellow-900/40"
-        >
-          <FaEdit />
-          Edit
-        </Link>
+        <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.96 }}>
+          <Link
+            href={`/edit-opportunity/${opportunity.id}`}
+            className="inline-flex items-center gap-2 rounded-xl bg-yellow-50 px-4 py-2 text-sm font-medium text-yellow-700 transition hover:bg-yellow-100 dark:bg-yellow-900/20 dark:text-yellow-300 dark:hover:bg-yellow-900/40"
+          >
+            <FaEdit />
+            Edit
+          </Link>
+        </motion.div>
 
         {onDelete && (
-          <button
+          <motion.button
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.96 }}
             onClick={() => onDelete(opportunity.id)}
             className="inline-flex items-center gap-2 rounded-xl bg-red-50 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-100 dark:bg-red-900/20 dark:text-red-300 dark:hover:bg-red-900/40"
           >
             <FaTrash />
             Delete
-          </button>
+          </motion.button>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

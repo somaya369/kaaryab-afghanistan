@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import OpportunityForm from "@/components/OpportunityForm";
+import { useToast } from "@/context/ToastContext";
 import {
   FaCheckCircle,
   FaClipboardList,
@@ -11,6 +12,7 @@ import {
 
 export default function AddOpportunityPage() {
   const router = useRouter();
+  const { showToast } = useToast();
 
   // This function runs after the form validation is successful
   function handleAddOpportunity(data) {
@@ -32,7 +34,7 @@ export default function AddOpportunityPage() {
       JSON.stringify(updatedOpportunities)
     );
 
-    alert("Opportunity submitted successfully!");
+    showToast("Opportunity submitted successfully.");
     router.push("/opportunities");
   }
 

@@ -6,12 +6,14 @@ import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
 import OpportunityForm from "@/components/OpportunityForm";
+import { useToast } from "@/context/ToastContext";
 import { opportunities } from "@/data/opportunities";
 
 
 export default function EditOpportunityPage() {
   const router = useRouter();
   const params = useParams();
+  const { showToast } = useToast();
 
   const [opportunity, setOpportunity] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -100,7 +102,7 @@ export default function EditOpportunityPage() {
     );
 
 
-    alert("Opportunity updated successfully!");
+    showToast("Opportunity updated successfully.");
 
     router.push("/opportunities");
   }

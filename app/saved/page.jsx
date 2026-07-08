@@ -1,6 +1,7 @@
 "use client";
 
 import OpportunityCard from "@/components/OpportunityCard";
+import EmptyState from "@/components/EmptyState";
 import { useSaved } from "@/context/SavedContext";
 
 export default function SavedPage() {
@@ -25,13 +26,13 @@ export default function SavedPage() {
             ))}
           </div>
         ) : (
-          <div className="card-bg border-soft mt-10 rounded-2xl p-10 text-center">
-            <h2 className="text-xl font-bold">No saved opportunities yet</h2>
-
-            <p className="text-muted mt-3">
-              Save opportunities from the opportunities page and they will
-              appear here.
-            </p>
+          <div className="mt-10">
+            <EmptyState
+              title="No saved opportunities yet"
+              text="Save opportunities from the opportunities page and they will appear here."
+              actionLabel="Explore Opportunities"
+              actionHref="/opportunities"
+            />
           </div>
         )}
       </section>

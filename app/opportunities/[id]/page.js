@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { opportunities } from "@/data/opportunities";
+import { getDeadlineStatus } from "@/lib/utils";
 
 import {
   FaArrowLeft,
@@ -76,6 +78,7 @@ export default function OpportunityDetailsPage() {
     );
   }
 
+  const deadlineStatus = getDeadlineStatus(opportunity.deadline);
 
 
   return (
@@ -83,17 +86,24 @@ export default function OpportunityDetailsPage() {
 
 
       {/* Hero */}
-      <section className="bg-gradient-to-r from-blue-700 to-indigo-700 px-4 py-16 text-white sm:px-6 lg:px-8">
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="bg-gradient-to-r from-blue-700 to-indigo-700 px-4 py-16 text-white sm:px-6 lg:px-8"
+      >
 
         <div className="mx-auto max-w-7xl">
 
-          <Link
-            href="/opportunities"
-            className="inline-flex items-center gap-2 text-blue-100 hover:text-white"
-          >
-            <FaArrowLeft />
-            Back
-          </Link>
+          <motion.div whileHover={{ x: -3 }} whileTap={{ scale: 0.97 }}>
+            <Link
+              href="/opportunities"
+              className="inline-flex items-center gap-2 text-blue-100 hover:text-white"
+            >
+              <FaArrowLeft />
+              Back
+            </Link>
+          </motion.div>
 
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -104,7 +114,15 @@ export default function OpportunityDetailsPage() {
             {opportunity.featured && (
               <span className="inline-flex items-center gap-2 rounded-full bg-amber-300 px-4 py-2 text-sm font-semibold text-amber-950">
                 <FaStar />
+                ⭐
                 Featured
+              </span>
+            )}
+
+            {deadlineStatus.isExpiringSoon && (
+              <span className="inline-flex items-center gap-2 rounded-full bg-red-100 px-4 py-2 text-sm font-semibold text-red-700">
+                🔥
+                Expiring Soon
               </span>
             )}
           </div>
@@ -121,13 +139,19 @@ export default function OpportunityDetailsPage() {
 
         </div>
 
-      </section>
+      </motion.section>
 
 
 
 
       {/* Content */}
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <motion.section
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="px-4 py-16 sm:px-6 lg:px-8"
+      >
 
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_350px]">
 
@@ -137,7 +161,10 @@ export default function OpportunityDetailsPage() {
 
 
             {/* Description */}
-            <div className="card-bg border-soft rounded-3xl p-8 shadow-sm">
+            <motion.div
+              whileHover={{ y: -4 }}
+              className="card-bg border-soft rounded-3xl p-8 shadow-sm"
+            >
 
               <h2 className="text-2xl font-bold">
                 Description
@@ -148,13 +175,16 @@ export default function OpportunityDetailsPage() {
                 {opportunity.description}
               </p>
 
-            </div>
+            </motion.div>
 
 
 
 
             {/* Requirements */}
-            <div className="card-bg border-soft rounded-3xl p-8 shadow-sm">
+            <motion.div
+              whileHover={{ y: -4 }}
+              className="card-bg border-soft rounded-3xl p-8 shadow-sm"
+            >
 
               <h2 className="text-2xl font-bold">
                 Requirements
@@ -171,13 +201,16 @@ export default function OpportunityDetailsPage() {
 
               </ul>
 
-            </div>
+            </motion.div>
 
 
 
 
             {/* Tags */}
-            <div className="card-bg border-soft rounded-3xl p-8 shadow-sm">
+            <motion.div
+              whileHover={{ y: -4 }}
+              className="card-bg border-soft rounded-3xl p-8 shadow-sm"
+            >
 
               <h2 className="text-2xl font-bold">
                 Tags
@@ -200,7 +233,7 @@ export default function OpportunityDetailsPage() {
 
               </div>
 
-            </div>
+            </motion.div>
 
 
           </div>
@@ -242,6 +275,19 @@ export default function OpportunityDetailsPage() {
                   value={opportunity.deadline}
                 />
 
+                <Info
+                  icon={<FaCalendarAlt />}
+                  title="Status"
+                  value={deadlineStatus.text}
+                  valueClassName={
+                    deadlineStatus.isExpired
+                      ? "text-red-600 dark:text-red-400"
+                      : deadlineStatus.isExpiringSoon
+                        ? "text-orange-600 dark:text-orange-400"
+                        : "text-green-600 dark:text-green-400"
+                  }
+                />
+
               </div>
 
             </div>
@@ -262,16 +308,18 @@ export default function OpportunityDetailsPage() {
               </p>
 
 
-              <a
+              <motion.a
                 href={opportunity.applyLink}
                 target="_blank"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.97 }}
                 className="btn-primary mt-6 flex items-center justify-center gap-2"
               >
                 Apply
 
                 <FaExternalLinkAlt />
 
-              </a>
+              </motion.a>
 
             </div>
 
@@ -281,7 +329,7 @@ export default function OpportunityDetailsPage() {
 
         </div>
 
-      </section>
+      </motion.section>
 
 
     </main>
@@ -291,7 +339,7 @@ export default function OpportunityDetailsPage() {
 
 
 
-function Info({ icon, title, value }) {
+function Info({ icon, title, value, valueClassName = "" }) {
   return (
     <div className="flex gap-3">
 
@@ -306,7 +354,7 @@ function Info({ icon, title, value }) {
           {title}
         </p>
 
-        <p className="font-semibold">
+        <p className={`font-semibold ${valueClassName}`}>
           {value}
         </p>
 

@@ -1,18 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import EmptyState from "@/components/EmptyState";
 import Modal from "@/components/Modal";
 import OpportunityCard from "@/components/OpportunityCard";
+import { useToast } from "@/context/ToastContext";
 import { opportunities } from "@/data/opportunities";
 
 export default function OpportunitiesPage() {
+  const visibleStep = 6;
+
   const [allOpportunities, setAllOpportunities] = useState(opportunities);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Categories");
   const [type, setType] = useState("All Types");
   const [featured, setFeatured] = useState("All Opportunities");
+  const [sortBy, setSortBy] = useState("Featured First");
+  const [visibleCount, setVisibleCount] = useState(visibleStep);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const { showToast } = useToast();
 
   const categoryTabs = [
     "All Categories",
@@ -25,32 +33,69 @@ export default function OpportunitiesPage() {
     "Volunteer Work",
   ];
 
+  const sortOptions = [
+    "Featured First",
+    "Newest",
+    "Deadline Soon",
+    "Title A-Z",
+  ];
+
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
       const storedOpportunities =
         JSON.parse(localStorage.getItem("customOpportunities")) || [];
+      const deletedOpportunityIds =
+        JSON.parse(localStorage.getItem("deletedOpportunityIds")) || [];
+      const activeDemoOpportunities = opportunities.filter(
+        (item) => !deletedOpportunityIds.includes(String(item.id))
+      );
 
-      setAllOpportunities([...opportunities, ...storedOpportunities]);
+      setAllOpportunities([...activeDemoOpportunities, ...storedOpportunities]);
     }, 0);
 
     return () => window.clearTimeout(timeoutId);
   }, []);
 
-  const filteredOpportunities = allOpportunities.filter((opportunity) => {
-    const matchesSearch = opportunity.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
+  const filteredOpportunities = useMemo(() => {
+    const filtered = allOpportunities.filter((opportunity) => {
+      const matchesSearch = opportunity.title
+        .toLowerCase()
+        .includes(search.toLowerCase());
 
-    const matchesCategory =
-      category === "All Categories" || opportunity.category === category;
+      const matchesCategory =
+        category === "All Categories" || opportunity.category === category;
 
-    const matchesType = type === "All Types" || opportunity.type === type;
+      const matchesType = type === "All Types" || opportunity.type === type;
 
-    const matchesFeatured =
-      featured === "All Opportunities" || opportunity.featured;
+      const matchesFeatured =
+        featured === "All Opportunities" || opportunity.featured;
 
-    return matchesSearch && matchesCategory && matchesType && matchesFeatured;
-  });
+      return matchesSearch && matchesCategory && matchesType && matchesFeatured;
+    });
+
+    return [...filtered].sort((first, second) => {
+      if (sortBy === "Deadline Soon") {
+        return new Date(first.deadline) - new Date(second.deadline);
+      }
+
+      if (sortBy === "Title A-Z") {
+        return first.title.localeCompare(second.title);
+      }
+
+      if (sortBy === "Newest") {
+        return Number(second.id) - Number(first.id);
+      }
+
+      return Number(second.featured) - Number(first.featured);
+    });
+  }, [allOpportunities, search, category, type, featured, sortBy]);
+
+  const visibleOpportunities = filteredOpportunities.slice(0, visibleCount);
+  const hasMoreOpportunities = visibleCount < filteredOpportunities.length;
+
+  function resetVisibleCards() {
+    setVisibleCount(visibleStep);
+  }
 
   function openDeleteModal(id) {
     setSelectedId(id);
@@ -60,26 +105,44 @@ export default function OpportunitiesPage() {
   function handleDelete() {
     const storedOpportunities =
       JSON.parse(localStorage.getItem("customOpportunities")) || [];
+    const deletedOpportunityIds =
+      JSON.parse(localStorage.getItem("deletedOpportunityIds")) || [];
 
     const updatedOpportunities = storedOpportunities.filter(
       (item) => item.id !== selectedId
+    );
+    const updatedDeletedIds = deletedOpportunityIds.includes(String(selectedId))
+      ? deletedOpportunityIds
+      : [...deletedOpportunityIds, String(selectedId)];
+    const activeDemoOpportunities = opportunities.filter(
+      (item) => !updatedDeletedIds.includes(String(item.id))
     );
 
     localStorage.setItem(
       "customOpportunities",
       JSON.stringify(updatedOpportunities)
     );
+    localStorage.setItem(
+      "deletedOpportunityIds",
+      JSON.stringify(updatedDeletedIds)
+    );
 
-    setAllOpportunities([...opportunities, ...updatedOpportunities]);
+    setAllOpportunities([...activeDemoOpportunities, ...updatedOpportunities]);
     setIsModalOpen(false);
     setSelectedId(null);
+    showToast("Opportunity deleted successfully.", "info");
   }
 
   return (
     <>
       <main className="page-bg">
         {/* Page Header */}
-        <section className="section-bg px-4 py-12 sm:px-6 lg:px-8">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="section-bg px-4 py-12 sm:px-6 lg:px-8"
+        >
           <div className="mx-auto max-w-7xl text-center">
             <h1 className="text-4xl font-bold">Explore Opportunities</h1>
 
@@ -88,23 +151,35 @@ export default function OpportunitiesPage() {
               opportunities in one place.
             </p>
           </div>
-        </section>
+        </motion.section>
 
         {/* Search and Filter Section */}
-        <section className="px-4 py-8 sm:px-6 lg:px-8">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="px-4 py-8 sm:px-6 lg:px-8"
+        >
           <div className="card-bg border-soft mx-auto max-w-7xl rounded-2xl p-6 shadow-sm">
-            <div className="grid gap-4 md:grid-cols-5">
+            <div className="grid gap-4 md:grid-cols-6">
               <input
                 type="text"
                 placeholder="Search by title..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  resetVisibleCards();
+                }}
                 className="input-style md:col-span-2"
               />
 
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                  resetVisibleCards();
+                }}
                 className="input-style"
               >
                 {categoryTabs.map((item) => (
@@ -114,7 +189,10 @@ export default function OpportunitiesPage() {
 
               <select
                 value={type}
-                onChange={(e) => setType(e.target.value)}
+                onChange={(e) => {
+                  setType(e.target.value);
+                  resetVisibleCards();
+                }}
                 className="input-style"
               >
                 <option>All Types</option>
@@ -124,20 +202,41 @@ export default function OpportunitiesPage() {
 
               <select
                 value={featured}
-                onChange={(e) => setFeatured(e.target.value)}
+                onChange={(e) => {
+                  setFeatured(e.target.value);
+                  resetVisibleCards();
+                }}
                 className="input-style"
               >
                 <option>All Opportunities</option>
                 <option>Featured Only</option>
+              </select>
+
+              <select
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                  resetVisibleCards();
+                }}
+                className="input-style"
+              >
+                {sortOptions.map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
               </select>
             </div>
 
             {/* Category Tabs */}
             <div className="mt-6 flex flex-wrap gap-3">
               {categoryTabs.map((item) => (
-                <button
+                <motion.button
                   key={item}
-                  onClick={() => setCategory(item)}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => {
+                    setCategory(item);
+                    resetVisibleCards();
+                  }}
                   className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
                     category === item
                       ? "border-blue-600 bg-blue-600 text-white"
@@ -145,14 +244,20 @@ export default function OpportunitiesPage() {
                   }`}
                 >
                   {item}
-                </button>
+                </motion.button>
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Opportunity Cards Section */}
-        <section className="px-4 pb-16 sm:px-6 lg:px-8">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="px-4 pb-16 sm:px-6 lg:px-8"
+        >
           <div className="mx-auto max-w-7xl">
             <div className="mb-6 flex items-center justify-between gap-4">
               <h2 className="text-2xl font-bold">All Opportunities</h2>
@@ -163,22 +268,42 @@ export default function OpportunitiesPage() {
             </div>
 
             {filteredOpportunities.length > 0 ? (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredOpportunities.map((opportunity) => (
-                  <OpportunityCard
-                    key={opportunity.id}
-                    opportunity={opportunity}
-                    onDelete={openDeleteModal}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {visibleOpportunities.map((opportunity) => (
+                    <OpportunityCard
+                      key={opportunity.id}
+                      opportunity={opportunity}
+                      onDelete={openDeleteModal}
+                    />
+                  ))}
+                </div>
+
+                {hasMoreOpportunities && (
+                  <div className="mt-10 text-center">
+                    <motion.button
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() =>
+                        setVisibleCount((current) => current + visibleStep)
+                      }
+                      className="btn-primary"
+                    >
+                      Load More
+                    </motion.button>
+                  </div>
+                )}
+              </>
             ) : (
-              <div className="card-bg border-soft rounded-2xl p-8 text-center">
-                <p className="text-muted">No opportunities found.</p>
-              </div>
+              <EmptyState
+                title="No opportunities found"
+                text="Try a different search, category, type, featured filter, or sorting option."
+                actionLabel="Add Opportunity"
+                actionHref="/add-opportunity"
+              />
             )}
           </div>
-        </section>
+        </motion.section>
       </main>
 
       <Modal

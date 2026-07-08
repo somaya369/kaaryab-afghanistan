@@ -71,7 +71,7 @@ export default function Navbar() {
             aria-label="Toggle Theme"
             className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-yellow-400"
           >
-            {theme === "dark" ? <FaSun /> : <FaMoon />}
+          {theme === "dark" ? <FaSun /> : <FaMoon />}
           </button>
 
           {/* Mobile menu button */}
