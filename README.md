@@ -194,6 +194,7 @@ kaaryab-afghanistan/
 
 3. **Open your browser:**
    Go to [http://localhost:3000](http://localhost:3000)
+   Vercel   [ https://kaaryab-afghanistan-cxambag0q-somayas-projects-0114447e.vercel.app]
 
 ---
 
