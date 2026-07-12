@@ -220,6 +220,20 @@ This project helped strengthen practical knowledge in:
 - **PDF CV Builder**: An automatic resume generator for students.
 
 ---
+## 📸 Screenshots
+
+Here are the visual layouts of the KaarYab Afghanistan platform:
+
+### 🏠 Home Page & Search Filters
+![Home Page Screen](<img width="914" height="422" alt="image" src="https://github.com/user-attachments/assets/0e9bb3a8-c5c8-46d7-9f83-f12201496e63" />
+)
+
+### 📊 Main Analytical Dashboard
+![Dashboard Screen](./public/screenshots/dashboard.png)
+
+### 📄 Opportunity Detailed View
+![Details Page Screen](./public/screenshots/details.png)
+
 
 ## ✍️ Author
 **Somaya Ahmadi**
