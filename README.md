@@ -241,4 +241,4 @@ Here are the visual layouts of the KaarYab Afghanistan platform:
 **Somaya Ahmadi**
 
 ## 📄 License
-This project was developed for educational purposes as part of a university coursework assignment.
+This project was developed as an independent portfolio piece solely for educational purposes.
