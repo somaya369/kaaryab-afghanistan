@@ -2,7 +2,7 @@
 
 A modern opportunity discovery platform built with Next.js to help Afghan youth find jobs, internships, scholarships, remote work, training programs, volunteer opportunities, and online courses in one place.
 
-** About the Project**
+### About the Project
 
 KaarYab Afghanistan is a modern web application developed as part of a university coursework assignment to demonstrate practical skills in modern frontend web development.
 
@@ -11,7 +11,7 @@ The project addresses a common challenge faced by Afghan youth: opportunities ar
 Beyond solving this problem, the project showcases the implementation of modern React and Next.js development practices, reusable component architecture, responsive UI design, state management, animations, and API integration.
 
 
-** Objectives**
+### Objectives
 
 The primary objectives of this project were to:
 
@@ -26,9 +26,9 @@ The primary objectives of this project were to:
 - Follow clean code and scalable project architecture.
 
 
-** Features**
+### Features
 
-** Opportunity Management**
+### Opportunity Management
 
 - Browse all opportunities
 - View detailed opportunity pages
@@ -48,7 +48,7 @@ The primary objectives of this project were to:
 - Sort opportunities
 - Load More pagination
 
-** Dashboard**
+### Dashboard
 
 - Opportunity statistics
 - Interactive charts
@@ -56,7 +56,7 @@ The primary objectives of this project were to:
 - Recent submissions
 - Summary cards
 
-** User Experience**
+### User Experience
 
 - Responsive design
 - Dark / Light Mode
@@ -67,7 +67,7 @@ The primary objectives of this project were to:
 - Confirmation dialogs
 - Empty state components
 
-** Technical Features**
+### Technical Features
 
 - Next.js App Router
 - Dynamic Routing
@@ -78,7 +78,7 @@ The primary objectives of this project were to:
 - Clean Folder Structure
 - Component-based Architecture
 
-** Technologies**
+### Technologies
 
 ### Frontend
 
@@ -101,7 +101,7 @@ The primary objectives of this project were to:
 
 ---
 
-# Project Structure
+### Project Structure
 kaaryab-afghanistan/
 
 ├── app/
@@ -152,7 +152,7 @@ kaaryab-afghanistan/
 └── lib/
     └── utils.js
 
-# Available Pages
+### Available Pages
 
 - Home
 - Opportunities
@@ -166,28 +166,29 @@ kaaryab-afghanistan/
 
 
 
-# Running the Project
+### Running the Project
 
-Install dependencies
+--- Install dependencies
 bash
 npm install
 
 
-Start the development server
+--- Start the development server
 
 bash
 npm run dev
 
 
-Open your browser
+--- Open your browser
 
 
 [http://localhost:3000](http://localhost:3000/)
 
 
 ---
-##Project screenshot
-<img width="1087" height="3001" alt="screenshot_1783877421442" src="https://github.com/user-attachments/assets/72f51682-43bd-40f9-b809-37847c51fe0c" />
+### Project screenshot
+
+<img width="800" height="800" alt="screenshot_1783877421442" src="https://github.com/user-attachments/assets/72f51682-43bd-40f9-b809-37847c51fe0c" />
 
 
 # Learning Outcomes
