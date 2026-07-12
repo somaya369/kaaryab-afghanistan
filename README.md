@@ -224,15 +224,17 @@ This project helped strengthen practical knowledge in:
 
 Here are the visual layouts of the KaarYab Afghanistan platform:
 
-### 🏠 Home Page & Search Filters
-<img width="914" height="422" alt="image" src="https://github.com/user-attachments/assets/9e04ef16-9dc0-4947-b05a-65fcb5753001" />
+### screenshoot
+<img width="459" height="319" alt="image" src="https://github.com/user-attachments/assets/45606191-9ba5-46bf-9643-9ae6649e0300" />
 
 
-### 📊 Main Analytical Dashboard
-![Dashboard Screen](./public/screenshots/dashboard.png)
 
-### 📄 Opportunity Detailed View
-![Details Page Screen](./public/screenshots/details.png)
+<img width="907" height="419" alt="image" src="https://github.com/user-attachments/assets/ed149a34-3efa-4211-b737-6becf83b2138" />
+
+
+<img width="908" height="419" alt="image" src="https://github.com/user-attachments/assets/67d63ace-a1bc-42f6-a8fb-42db1f4d5a7f" />
+
+<img width="911" height="419" alt="image" src="https://github.com/user-attachments/assets/61a6287f-9d58-470f-ad45-eac0fb18c98a" />
 
 
 ## ✍️ Author
