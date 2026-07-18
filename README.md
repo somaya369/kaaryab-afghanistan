@@ -211,7 +211,11 @@ This project helped strengthen practical knowledge in:
 
 ---
 
-## 🔮 Future Improvements
+## 🔮 Future Improvements (Roadmap)
+- **Advanced Filtering**: Adding location-based filters and comprehensive deadline validation/expiration filters to automatically hide expired opportunities.
+- **Form Validation & Handling**: Connecting the Contact Form to a secure database handler with real-time input validation.
+- **Loading Skeletons**: Implementing CSS/Tailwind skeleton screens during data fetching transitions to enhance perceived performance.
+- **Testing Suite**: Implementing Unit Tests using Jest and Integration Tests using Cypress to ensure core component stability.
 - **Authentication**: Implementing NextAuth.js for secure user logs.
 - **Database Integration**: Connecting to MongoDB/PostgreSQL via Prisma ORM.
 - **Multi-language Support**: Adding Dari and Pashto translations.
@@ -219,6 +223,8 @@ This project helped strengthen practical knowledge in:
 - **Email Notifications**: Automatic alerts for newly matching job tags.
 - **User Accounts**: Custom candidate profiles and application history tracking.
 - **PDF CV Builder**: An automatic resume generator for students.
+
+
 
 ---
 ## 📸 Screenshots
