@@ -64,7 +64,6 @@ The primary objectives of this project were to:
 - Filter by category
 - Filter by opportunity type
 - Sort opportunities
-- Load More pagination
 - Note: Location-based filtering and deadline-based filtering are not implemented in the current version.
 
 ### 📊 Dashboard
@@ -176,7 +175,7 @@ kaaryab-afghanistan/
 * Saved Opportunities (`/saved`)
 * Dashboard (`/dashboard`)
 * About (`/about`)
-* Contact (`/contact`)
+* Contact (`/contact`) ( UI Only)
 
 ---
 
