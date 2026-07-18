@@ -42,7 +42,7 @@ The primary objectives of this project were to:
 - Manage application state using Context API.
 - Implement API Routes.
 - Improve user experience through animations and interactive feedback.
-- Follow clean code and scalable project architecture.
+
 
 ---
 
@@ -65,6 +65,7 @@ The primary objectives of this project were to:
 - Filter by opportunity type
 - Sort opportunities
 - Load More pagination
+- Note: Location-based filtering and deadline-based filtering are not implemented in the current version.
 
 ### 📊 Dashboard
 - Opportunity statistics
@@ -78,7 +79,6 @@ The primary objectives of this project were to:
 - Dark / Light Mode
 - Smooth page animations
 - Card animations
-- Loading skeletons
 - Toast notifications
 - Confirmation dialogs
 - Empty state components
@@ -152,8 +152,8 @@ kaaryab-afghanistan/
 │   ├── Navbar.jsx
 │   ├── OpportunityCard.jsx
 │   ├── OpportunityForm.jsx
-│   ├── SearchFilter.jsx
 │   └── Toast.jsx
+│  
 │
 ├── context/
 │   ├── SavedContext.jsx
